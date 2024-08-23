@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Retirement Calculator</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+
+    <!--Navbar-->
+    <ul class="navbar">
+      <li class="navbar">
+        <a class="navbar" href="index.html">Calculator</a>
+      </li>
+
+      <li class="navbar">
+        <a class="navbar"
+           href="help.html">Help</a>
+      </li>
+    </ul>
+    <br>
+    <!--Navbar End-->
+
+    <script src="script.js"></script>
+
+    <!--Description-->
+    <h1>Retirement Calculator</h1>
+    <p class="desc">This website will help you to calculate your retirement funds. For explanations of the terms used, click "help".</p>
+
+    <!--Pre-Retirement-->
+    <table class="table1">
+      <tr>
+      <td><label for="savings">Current Savings ($):</label></td>
+      <td><input type="number" id="savings" name="savings" value="50000" oninput="DataSave()"></td>
+      </tr>
+
+      <tr>
+      <td><label for="contribution">Annual Contribution ($):</label></td>
+      <td><input type="number" id="contribution" name="contribution" value="10000" oninput="DataSave()"></td>
+      </tr>
+      
+      <tr>
+      <td><label for="aroi">Annual Return on Investment (%):</label></td>
+      <td><input type="number" id="aroi" name="aroi" value="6" oninput="DataSave()"></td>
+      </tr>
+
+      <tr>
+      <td><label for="c_age">Current Age:</label></td>
+      <td><input type="number" id="c_age" name="c_age" value="30" oninput="DataSave()"></td>
+      </tr>
+
+      <tr>
+      <td><label for="r_age">Retirement Age:</label></td>
+      <td><input type="number" id="r_age" name="r_age" value="65" oninput="DataSave()"></td>
+      </tr>
+    </table> 
+
+    <p class="total1" id="total1"></p>
+
+    <!--Post-Retirement-->
+    <table class="table2">
+      <tr>
+      <td><label for="lifespan">Estimated Lifespan:</label></td>
+      <td><input type="number" id="lifespan" name="lifespan" value="100" oninput="DataSave()"></td>
+      </tr>
+
+      <tr>
+      <td><label for="arir">Annual Return in Retirement (%):</label></td>
+      <td><input type="number" id="arir" name="arir" value="2" oninput="DataSave()"></td>
+      </tr>
+
+      <tr>
+      <td><label for="expenses">Monthly Expenses ($):</label></td>
+      <td><input type="number" id="expenses" name="expenses" value="5000" oninput="DataSave()"></td>
+      </tr>
+    </table> 
+
+    <p class="total2" id="total2"></p>
+
+    <script>
+      DataSave();
+    </script>
+
+    <!--Canvas-->
+    <canvas id="myChart" style="width:100%;max-width:800px;max-height:400px;">Your browser does not support the canvas element.</canvas>
+
+    <!--Graph Script-->
+    <script>
+      // Graph Items
+      for (let i = 0; i <= lifespan - c_age; i++) {
+        var new_value = c_age + i;
+        x_values.push(new_value);
+      }
+
+
+      for (let i = 0; i <= r_age - c_age; i++) {
+        var g_intrest1 = savings * (1 + aroi/100)**(i);
+        var g_contributions1 = contribution * (((1 + aroi/100)**(i) - 1) / (aroi/100)) * (1 + aroi/100);
+        var g_total1 = Math.round(g_intrest1 + g_contributions1);
+        y_values.push(g_total1);
+      }
+      for (let i = 1; i <= lifespan - r_age; i++) {
+        var g_intrest2 = total1 * (1 + arir/100)**(i);
+        var g_contributions2 = (expenses * -12) * (((1 + arir/100)**(i) - 1) / (arir/100)) * (1 + arir/100);
+        var g_total2 = Math.round(g_intrest2 + g_contributions2);
+        y_values.push(g_total2);
+      }
+
+      // Graph 
+      const ctx = "myChart";
+      const myGraph = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: x_values,
+          datasets: [
+            { 
+              data: y_values,
+              borderColor: "green",
+              fill: false
+            }
+          ]
+        },
+        options: {
+          tension: 0.25,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            x: {
+              type: "linear",
+              ticks: {
+                stepSize: 5
+              },
+              title: {
+                display: true,
+                text: "Age"
+              }
+            },
+            y: {
+              ticks: {
+                callback: function(value, index,values) {
+                  return '$' + number_format.format(value); 
+                }
+              }
+            }
+          }
+        }
+      });
+    </script>
+
+
+  </body>
+</html>
