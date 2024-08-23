@@ -1,0 +1,36 @@
+ul.navbar {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+li.navbar {
+  float: left;
+}
+
+a.navbar {
+  display: block;
+  padding: 10px;
+  background-color: #eeeeee;
+}
+
+h1 {
+  text-align: center;
+}
+
+.desc {
+  text-align: center;
+}
+
+.table1 {
+  border-spacing: 10px;
+}
+
+.table2 {
+  border-spacing: 13px;
+}
+
+.input {
+  width: 20px;
+}
